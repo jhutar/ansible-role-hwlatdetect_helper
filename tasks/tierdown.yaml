@@ -19,14 +19,6 @@
   run_once: yes
   when: "hwlatdetect_helper_store_local_logs_dir|length != 0"
 
-- name: "Cleanup local direcotry we will be fetching to"
-  ansible.builtin.file:
-    path: "{{ hwlatdetect_helper_store_local_logs_dir }}"
-    state: absent
-  delegate_to: localhost
-  run_once: yes
-  when: "hwlatdetect_helper_store_local_logs_dir|length != 0"
-
 - name: "Fetch logs"
   ansible.builtin.fetch:
     src: "/root/ansible-role-hwlatdetect_helper.log"
