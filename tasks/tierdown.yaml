@@ -5,6 +5,14 @@
     kill -s 2 $pid
     while [ -e /proc/$pid ]; do sleep 1; done
 
+- name: "Load logs so we can show them"
+  ansible.builtin.command: cat /root/ansible-role-hwlatdetect_helper.log
+  register: cat_log_cmd
+
+- name: "Show logs"
+  ansible.builtin.debug:
+    var: cat_log_cmd.stdout_lines
+
 - name: "Show local direcotry we will be fetching to"
   ansible.builtin.debug:
     var: hwlatdetect_helper_store_local_logs_dir
