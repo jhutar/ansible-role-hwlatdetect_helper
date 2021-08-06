@@ -1,0 +1,6 @@
+---
+- name: "Install hwlatdetect"
+  ansible.builtin.package:
+    name: rt-tests
+    state: installed
+...

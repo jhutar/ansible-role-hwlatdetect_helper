@@ -1,0 +1,26 @@
+- name: "Install and run hwlatdetect for some workload"
+  hosts: all
+  remote_user: root
+  gather_facts: off
+  tasks:
+    - name: "Install the tool"
+      include_role:
+        name: hwlatdetect_helper
+        tasks_from: install.yaml
+
+    - name: "Start measurement"
+      include_role:
+        name: hwlatdetect_helper
+        tasks_from: tierup.yaml
+      vars:
+        hwlatdetect_helper_test_duration: 600s
+
+    - name: "Perform the workload"
+      command: "dd if=/dev/urandom of=/dev/null bs=1K count=1M"
+
+    - name: "Stop measurement"
+      include_role:
+        name: hwlatdetect_helper
+        tasks_from: tierdown.yaml
+      vars:
+        hwlatdetect_helper_store_local_logs_dir: "/tmp/hwlatdetect-results/"

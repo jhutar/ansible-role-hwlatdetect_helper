@@ -1,0 +1,13 @@
+---
+# By default, do not collect logs
+hwlatdetect_helper_store_local_logs_dir: ''
+
+# Maximum time for hwlatdetect to run in a form accepted by the tool
+# (your workload need to finish before that)
+hwlatdetect_helper_test_duration: 1d
+
+# Other variables directly papped to tool's options
+hwlatdetect_helper_test_threshold: 10us
+hwlatdetect_helper_test_window: 1000000us
+hwlatdetect_helper_test_width: 950000us
+...
