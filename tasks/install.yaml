@@ -3,4 +3,14 @@
   ansible.builtin.package:
     name: rt-tests
     state: installed
+
+- name: "Workaround for https://marc.info/?l=linux-rt-users&m=162825848420688&w=2"
+  ansible.builtin.copy:
+    src: hwlatdetect
+    dest: /usr/bin/hwlatdetect
+    force: yes
+    backup: yes
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
 ...

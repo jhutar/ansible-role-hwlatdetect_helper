@@ -1,22 +1,28 @@
 ---
-- name: "Stop hwlatdetect"
+- name: "Stop hwlatdetect with SIGINT (Ctrl+C like)"
   ansible.builtin.shell: |
-    kill $( cat /root/ansible-role-hwlatdetect_helper.pid )
+    pid=$( cat /root/ansible-role-hwlatdetect_helper.pid )
+    kill -s 2 $pid
+    while [ -e /proc/$pid ]; do sleep 1; done
 
 - name: "Show local direcotry we will be fetching to"
   ansible.builtin.debug:
     var: hwlatdetect_helper_store_local_logs_dir
   run_once: yes
+  when: "hwlatdetect_helper_store_local_logs_dir|length != 0"
 
 - name: "Cleanup local direcotry we will be fetching to"
   ansible.builtin.file:
     path: "{{ hwlatdetect_helper_store_local_logs_dir }}"
     state: absent
   delegate_to: localhost
+  run_once: yes
+  when: "hwlatdetect_helper_store_local_logs_dir|length != 0"
 
-- name: "Fetch sosreport tarballs"
+- name: "Fetch logs"
   ansible.builtin.fetch:
     src: "/root/ansible-role-hwlatdetect_helper.log"
-    dest: "{{ sosreport_gatherer_local_dir }}/{{ inventory_hostname }}/"
+    dest: "{{ hwlatdetect_helper_store_local_logs_dir }}/{{ inventory_hostname }}/"
     flat: yes
+  when: "hwlatdetect_helper_store_local_logs_dir|length != 0"
 ...

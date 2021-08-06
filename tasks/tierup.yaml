@@ -8,10 +8,15 @@
 - name: "Start hwlatdetect"
   ansible.builtin.shell: |
     nohup hwlatdetect \
-      --duration "{{ hwlatdetect_helper_test_duration }}" \
-      --threshold "{{ hwlatdetect_helper_test_threshold }}" \
-      --window "{{ hwlatdetect_helper_test_window }}" \
-      --width "{{ hwlatdetect_helper_test_width }}" \
+      --duration '{{ hwlatdetect_helper_test_duration }}' \
+      --threshold '{{ hwlatdetect_helper_test_threshold }}' \
+      --window '{{ hwlatdetect_helper_test_window }}' \
+      --width '{{ hwlatdetect_helper_test_width }}' \
       &>/root/ansible-role-hwlatdetect_helper.log &
     echo $! >/root/ansible-role-hwlatdetect_helper.pid
+  register: hwlatdetect_cmd
+
+- name: "Show command we have ran"
+  ansible.builtin.debug:
+    msg: "{{ hwlatdetect_cmd.cmd }}"
 ...
